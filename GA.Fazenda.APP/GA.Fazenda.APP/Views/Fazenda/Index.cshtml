@@ -1,0 +1,154 @@
+﻿@model GA.Fazenda.APP.Models.PaginatedList<GA.Fazenda.APP.ViewModels.FazendaVM>
+@{
+    ViewData["Title"] = "Fazenda";
+}
+
+<div id="divFilterList">
+    <fieldset style=" border: solid 1px blue;
+        border-radius: 10px;
+        padding: 0px 20px 0px 20px; margin-bottom: 20px;">
+
+        <legend style="padding: 0 0 0 2%; width: 15%;">Filtro</legend>
+        <form asp-action="Search" method="GET">
+            <div>
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        <label class="control-label">Nome</label>
+                        <input id="txtSearchCode" data-filter-blur type="text" name="filterCode" autocomplete="off" class="form-control" value="@ViewData["FilterCode"]" />
+                    </div>
+
+                    <div class="form-group col-md-2">
+                        <br />
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            <span title="Deletar" class="fa fa-search"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </fieldset>
+</div>
+
+<div class="form-row">
+    <div class="form-group col-md-10">
+        <a class="btn btn-success btn-sm dialog-width-custom" asp-action="Create" data-modal=""><span title="Novo" class="fa fa-plus"></span></a>
+    </div>
+    <div class="form-group col-md-1" id="btnClearFilter">
+        <a class="btn btn-info btn-sm" asp-action="Index" data-action-refresh=""><span class="fa fa-sync"></span></a>
+    </div>
+    <div class="form-group col-md-2">
+        <a href="#" data-filter-expand class="btn btn-info btn-sm"><span class="fa fa-expand-arrows-alt"> </span></a>
+        <a href="#" data-filter-collapse class="btn btn-info btn-sm"><span class="fa fa-minus-square"> </span></a>
+    </div>
+</div>
+
+<table class="table table-hover table-striped table-sm">
+    <thead>
+        <tr class="text-light">
+            <th> Nome </th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody class="text-sm-left">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+
+                <td class="text-right">
+                    <partial name="_partialButtonsDefaultList" model="item" />
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    var visiblePagination = Model.TotalPages == 1 ? "visibility: hidden;" : "";
+}
+
+<div class="divPageArrow" style="@visiblePagination">
+    <a id="btnPaginationLeft" data-btn-pagination asp-action="Index"
+       asp-route-pageNumber="@(Model.PageIndex - 1)"
+       class="btn btn-light @prevDisabled">
+        <span title="Direita" class="fa fa-long-arrow-alt-left"></span>
+    </a>
+
+    <span class="btn btn-default">Página @(Model.PageIndex) - @(Model.TotalPages) </span>
+
+    <a id="btnPaginationRight" data-btn-pagination asp-action="Index"
+       asp-route-pageNumber="@(Model.PageIndex + 1)"
+       class="btn btn-light @nextDisabled">
+        <span title="Esquerda" class="fa fa-long-arrow-alt-right"></span>
+    </a>
+</div>
+
+<div id="myModal" class="modal fade in">
+    <div data-modal-width="" class="modal-dialog">
+        <div class="modal-content">
+            <div id="myModalContent"></div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+
+    <style type="text/css">
+        
+        .modal-dialog { max-width: 70%; }
+
+    </style>
+}
+
+@section Scripts {
+    @*@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}*@
+
+    <script>
+        var code = '';
+        var url = '';
+
+        $(document).ready(function () {
+
+            CollapseAndShowFilterIndex();
+
+            AjaxModal("", false);
+
+            $('[data-filter-blur]').blur(function () { ChangeURL(); });
+
+            $('[data-action-refresh]').click(function () {
+
+                $('#txtSearchCode').val('');
+                
+                ChangeURL();
+            });
+
+            $("[data-btn-pagination]").click(() => ChangeURL());
+        });
+
+        function ChangeURL() {
+            let href = $('#btnPaginationRight').attr('href');
+
+            let indexE = href.indexOf('&');
+            if (indexE != -1) { href = href.substr(0, indexE) };
+
+            codigo = $('#txtSearchCode').val();
+            filterType = $("[name='filterType']").val();
+
+            url = `${href}&filterCode=${codigo}`;
+            $('#btnPaginationRight').attr('href', url);
+
+            href = $('#btnPaginationLeft').attr('href');
+            indexE = href.indexOf('&');
+            if (indexE != -1) { href = href.substr(0, indexE) };
+
+            url = `${href}&filterCode=${code}`;
+
+            $('#btnPaginationLeft').attr('href', url);
+        }
+
+    </script>
+}

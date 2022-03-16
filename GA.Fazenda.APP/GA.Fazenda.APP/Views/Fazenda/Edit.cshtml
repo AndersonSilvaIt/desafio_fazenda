@@ -1,0 +1,28 @@
+﻿@model GA.Fazenda.APP.ViewModels.FazendaVM
+@{
+    ViewData["Title"] = "Fazenda - Editar";
+    Layout = "";
+}
+
+<partial name="_partialModalDialog" />
+
+<form asp-action="Edit">
+    <div class="modal-body">
+
+        <vc:summary></vc:summary>
+
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-group">
+            <label asp-for="Nome" class="control-label"></label>
+            <input asp-for="Nome" class="form-control" />
+            <span asp-validation-for="Nome" class="text-danger"></span>
+        </div>
+
+        <br />
+
+        <partial name="_partialSubmit" />
+    </div>
+</form>
+
+

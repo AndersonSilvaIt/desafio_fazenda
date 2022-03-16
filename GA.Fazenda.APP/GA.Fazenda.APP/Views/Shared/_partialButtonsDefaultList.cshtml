@@ -1,0 +1,12 @@
+﻿@model GA.Fazenda.APP.ViewModels.VMBase;
+
+<a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-info btn-sm dialog-width-custom" data-modal="">
+    <span class="fa fa-search"></span>
+</a>
+
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning btn-sm dialog-width-custom" data-modal="">
+    <span title="Editar" class="fa fa-pencil-alt"></span>
+</a>
+<a asp-action="Delete" asp-route-id="@Model.Id"  supress-by-claim-value="Delete" class="btn btn-danger btn-sm dialog-width-custom" data-modal="">
+    <span title="Deletar" class="fa fa-trash"></span>
+</a>

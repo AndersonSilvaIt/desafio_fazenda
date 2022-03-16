@@ -8,12 +8,11 @@ namespace GA.Fazenda.Business.Interfaces.Repositorios
 {
 	public interface IRepository<TEntity> : IDisposable where TEntity : EntidadeBase
 	{
-		Task Adicionar(TEntity entity);
+		void Adicionar(TEntity entity);
 		Task<TEntity> ObterPorId(int id);
 		Task<IEnumerable<TEntity>> ObterTodos();
-		Task Atualizar(TEntity entity);
-		Task Remover(int id);
+		void Atualizar(TEntity entity);
+		void Remover(int id);
 		Task<IEnumerable<TEntity>> Buscar(Expression<Func<TEntity, bool>> predicate);
-		Task<int> SaveChanges();
 	}
 }

@@ -7,13 +7,13 @@ using GA.Fazenda.Business.Models;
 
 namespace GA.Fazenda.Business
 {
-    public abstract class BaseService
+    public abstract class ServicoBase
 	{
 		private readonly INotificador _notificador;
 
 		private readonly IUnitOfWork _uow;
 
-		public BaseService(INotificador notificador, IUnitOfWork uow)
+		public ServicoBase(INotificador notificador, IUnitOfWork uow)
 		{
 			_uow = uow;
 			_notificador = notificador;
