@@ -1,0 +1,40 @@
+﻿@model GA.Fazenda.APP.ViewModels.AnimalVM
+
+@{
+    ViewData["Title"] = "Animal - Delete";
+    Layout = "";
+}
+
+<partial name="_partialModalDialog" />
+
+<div class="row">
+
+    <div class="modal-body">
+        <div class="container">
+
+            <h5>Tem certeza que deseja excluir ?</h5> <br /><br />
+
+            <div class="form-group">
+                <label asp-for="Tag" class="control-label"></label>
+                <input asp-for="Tag" disabled class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="FazendaId" class="control-label"></label>
+                <input asp-for="Fazenda.Nome" disabled class="form-control" />
+            </div>
+
+            <br />
+
+            <br />
+            <hr />
+            <div>
+                <form asp-action="DeleteConfirma">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="submit" value="Delete" class="btn btn-danger" />
+                    <input type="button" class="btn btn-info" value="Voltar" data-dismiss="modal" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
