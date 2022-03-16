@@ -1,0 +1,37 @@
+﻿@model GA.Fazenda.APP.ViewModels.AnimalVM
+@{
+    ViewData["Title"] = "Animal - Editar";
+    Layout = "";
+}
+
+<partial name="_partialModalDialog" />
+
+<form asp-action="Edit">
+    
+    <div class="modal-body">
+
+        <vc:summary></vc:summary>
+
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-group">
+            <label asp-for="Tag" class="control-label"></label>
+            <input asp-for="Tag" class="form-control" />
+            <span asp-validation-for="Tag" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="FazendaId" class="control-label"></label>
+            <select asp-for="FazendaId" class="form-control" asp-items="@(new SelectList(Model.Fazendas, "Id", "Nome"))">
+                <option></option>
+            </select>
+            <span asp-validation-for="FazendaId" class="text-danger"></span>
+        </div>
+
+        <br />
+
+        <partial name="_partialSubmit" />
+    </div>
+</form>
+
+

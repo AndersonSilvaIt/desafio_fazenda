@@ -7,6 +7,7 @@
 <partial name="_partialModalDialog" />
 
 <form asp-action="Edit">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="modal-body">
 
         <vc:summary></vc:summary>
@@ -18,6 +19,7 @@
             <input asp-for="Nome" class="form-control" />
             <span asp-validation-for="Nome" class="text-danger"></span>
         </div>
+
 
         <br />
 

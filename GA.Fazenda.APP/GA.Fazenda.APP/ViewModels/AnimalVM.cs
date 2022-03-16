@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace GA.Fazenda.APP.ViewModels
@@ -8,6 +9,10 @@ namespace GA.Fazenda.APP.ViewModels
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [StringLength(15, ErrorMessage = "O campo {0} precisa ter entre {2} e {1} caracteres", MinimumLength = 1)]
         public string Tag { get; set; }
+
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
+        [DisplayName("Fazenda")]
+        public int FazendaId { get; set; }
 
         public FazendaVM Fazenda { get; set; }
 

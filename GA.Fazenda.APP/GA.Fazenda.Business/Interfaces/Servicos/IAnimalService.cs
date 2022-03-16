@@ -8,5 +8,6 @@ namespace GA.Fazenda.Business.Interfaces.Servicos
         Task Adicionar(Animal animal);
         Task Atualizar(Animal animal);
         void Remover(int id);
+        Task<bool> Commited();
     }
 }

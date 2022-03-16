@@ -44,7 +44,12 @@ namespace GA.Fazenda.Business.Servicos
 			_animalRepository.Atualizar(animal);
 		}
 
-		public void Remover(int id)
+        public async Task<bool> Commited()
+        {
+			return await Commit();
+        }
+
+        public void Remover(int id)
 		{
 			_animalRepository.Remover(id);
 		}

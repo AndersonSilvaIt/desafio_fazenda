@@ -15,6 +15,8 @@ namespace GA.Fazenda.Data.Mappings
             builder.Property(x => x.Tag)
                 .IsRequired()
                 .HasColumnType("varchar(15)");
+
+            builder.Property(x => x.FazendaId);
         }
     }
 }

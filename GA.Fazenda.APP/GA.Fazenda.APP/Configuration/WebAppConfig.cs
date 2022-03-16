@@ -41,8 +41,6 @@ namespace GA.Fazenda.APP.Configuration
 
 			app.UseRouting();
 
-			
-
 			var supportedCultures = new[] { new CultureInfo("pt-BR") };
 			app.UseRequestLocalization(new RequestLocalizationOptions
 			{

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GA.Fazenda.Data.Migrations
 {
     [DbContext(typeof(FazendaContexto))]
-    [Migration("20220316144948_Start")]
+    [Migration("20220316200308_Start")]
     partial class Start
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
