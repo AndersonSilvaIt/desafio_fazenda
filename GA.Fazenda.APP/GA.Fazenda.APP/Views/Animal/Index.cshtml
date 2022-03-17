@@ -3,6 +3,8 @@
     ViewData["Title"] = "Animal";
 }
 
+<h4>Lista de Animais</h4>
+
 <div id="divFilterList">
     <fieldset style=" border: solid 1px blue;
         border-radius: 10px;
@@ -123,7 +125,6 @@
 @section Scripts {
 
     <script>
-        var code = '';
         var url = '';
 
         $(document).ready(function () {
@@ -196,7 +197,7 @@
             let indexE = href.indexOf('&');
             if (indexE != -1) { href = href.substr(0, indexE) };
 
-            codigo = $('#txtSearchTag').val();
+            var codigo = $('#txtSearchTag').val();
             fazendaId = $("#ddlFazenda").val();
             console.log('Id da Fazenda Selecionado: ', fazendaId);
 
@@ -207,10 +208,11 @@
             indexE = href.indexOf('&');
             if (indexE != -1) { href = href.substr(0, indexE) };
 
-            url = `${href}&filterTag=${code}&filterFazendaId=${fazendaId}`;
+            url = `${href}&filterTag=${codigo}&filterFazendaId=${fazendaId}`;
 
             $('#btnPaginationLeft').attr('href', url);
         }
+
 
     </script>
 }

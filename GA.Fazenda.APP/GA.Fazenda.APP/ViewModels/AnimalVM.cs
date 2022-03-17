@@ -10,9 +10,10 @@ namespace GA.Fazenda.APP.ViewModels
         [StringLength(15, ErrorMessage = "O campo {0} precisa ter entre {2} e {1} caracteres", MinimumLength = 1)]
         public string Tag { get; set; }
 
+
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [DisplayName("Fazenda")]
-        public int FazendaId { get; set; }
+        public int? FazendaId { get; set; }
 
         public FazendaVM Fazenda { get; set; }
 

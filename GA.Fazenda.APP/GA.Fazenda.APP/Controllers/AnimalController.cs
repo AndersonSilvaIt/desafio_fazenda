@@ -132,7 +132,6 @@ namespace GA.Fazenda.APP.Controllers
             return View("Delete", animalVM);
         }
 
-        [Route("excluir-animal/{id:int}")]
         [HttpPost]
         public async Task<IActionResult> DeleteConfirma(int Id)
         {

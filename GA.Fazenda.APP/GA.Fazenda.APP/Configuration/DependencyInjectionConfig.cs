@@ -18,7 +18,6 @@ namespace GA.Fazenda.APP.Configuration
 			services.AddScoped<IFazendaRepository, FazendaRepository>();
 			services.AddScoped<IAnimalRepository, AnimalRepository>();
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
-			
 			services.AddScoped<INotificador, Notificador>();
 			services.AddScoped<IFazendaService, FazendaService>();
 			services.AddScoped<IAnimalService, AnimalService>();

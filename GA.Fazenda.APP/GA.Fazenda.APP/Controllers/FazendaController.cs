@@ -118,13 +118,14 @@ namespace GA.Fazenda.APP.Controllers
             return View("Delete", fazendaVM);
         }
 
-        [Route("excluir-fazenda/{id:int}")]
         [HttpPost]
         public async Task<IActionResult> DeleteConfirma(int Id)
         {
+            var fazendaVM = _mapper.Map<FazendaVM>(await _fazendaRepository.ObterPorId(Id));
+
             _fazendaService.Remover(Id);
 
-            if (!OperacaoValida()) return NotFound();
+            if (!OperacaoValida()) return View("Delete", fazendaVM);
 
             await _fazendaService.Commited();
 

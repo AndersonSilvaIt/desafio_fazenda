@@ -123,9 +123,9 @@
 @section Scripts {
 
     <script>
-        var code = '';
         var url = '';
-
+        var listaAnimais = [];
+        var idGlobal = 0;
         $(document).ready(function () {
 
             PrrencherCombo();
@@ -183,11 +183,77 @@
 
         function AfterLoadModal() {
 
+            var valorListaHidden = $('#hdListaAnimal').val();
+
+            if (valorListaHidden.length > 0) {
+
+                listaAnimais = JSON.parse(valorListaHidden);
+                console.log('Lista Convertida', listaAnimais);
+                idGlobal = listaAnimais.length;
+                for (var i = 0; i < listaAnimais.length; i++) {
+                    $('#listAnimal').append($('<option>', { value: idGlobal, text: listaAnimais[i] }));
+                    idGlobal++;
+                }
+            }
+
+            AdicionaRemoverAnimais();
+
             $("input[name='Tag']").keydown(function (e) {
 
                 if (!$.isNumeric(String.fromCharCode(e.which))) e.preventDefault();
             });
 
+            $("#btnSave").click(function (e) {
+
+                if (listaAnimais.length <= 0) {
+                    alert('Informe pelo menos um animal!');
+                    e.preventDefault();
+                }
+
+                let jsonAnimais = JSON.stringify(listaAnimais);
+
+                $('#hdListaAnimal').val(jsonAnimais);
+            });
+
+
+        }
+
+
+        function AdicionaRemoverAnimais() {
+
+            $("#btnAddAnimal").click(function (e) {
+                e.preventDefault();
+                var tag = $("input[name='Tag']").val();
+                if (tag.length <= 0) {
+                    alert('Tag precisa ser maior que zero.')
+                    return;
+                }
+
+                if (tag.length > 15) {
+                    return;
+                }
+                // verificar se na lista já não contém a Tag.
+                var index = listaAnimais.indexOf(tag);
+                if (index != -1) {
+                    alert('Tag já adicionado na lista');
+                    return;
+                }
+                idGlobal++;
+                $('#listAnimal').append($('<option>', { value: idGlobal, text: tag }));
+                listaAnimais.push(tag);
+                $("input[name='Tag']").val('');
+            });
+
+            $("#btnRemoveAnimal").click(function (e) {
+                e.preventDefault();
+                $("#listAnimal option:selected").each(function () {
+                    var text = $(this).text();
+                    var indexOf = listaAnimais.indexOf(text);
+                    listaAnimais.splice(indexOf, 1);
+                    $(this).remove();
+                });
+
+            });
         }
 
         function ChangeURL() {
@@ -196,7 +262,7 @@
             let indexE = href.indexOf('&');
             if (indexE != -1) { href = href.substr(0, indexE) };
 
-            codigo = $('#txtSearchTag').val();
+            var codigo = $('#txtSearchTag').val();
             fazendaId = $("#ddlFazenda").val();
             console.log('Id da Fazenda Selecionado: ', fazendaId);
 
@@ -207,7 +273,7 @@
             indexE = href.indexOf('&');
             if (indexE != -1) { href = href.substr(0, indexE) };
 
-            url = `${href}&filterTag=${code}&filterFazendaId=${fazendaId}`;
+            url = `${href}&filterTag=${codigo}&filterFazendaId=${fazendaId}`;
 
             $('#btnPaginationLeft').attr('href', url);
         }

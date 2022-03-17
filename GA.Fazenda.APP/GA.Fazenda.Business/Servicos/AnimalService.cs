@@ -24,7 +24,7 @@ namespace GA.Fazenda.Business.Servicos
 
 			if ((await _animalRepository.Buscar(f => f.Tag == animal.Tag)).Any())
 			{
-				Notificar("Já existe um animal com esta tag informada.");
+				Notificar($"Já existe um animal com esta tag informada: {animal.Tag}");
 				return;
 			}
 

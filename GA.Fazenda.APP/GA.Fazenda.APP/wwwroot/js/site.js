@@ -14,7 +14,6 @@
 
 					} else {
 
-						//dialog-width-custom
 						var hasClassWithCustom = $(this).hasClass("dialog-width-custom");
 
 						if (!hasClassWithCustom) {
@@ -25,7 +24,6 @@
 					$('#myModalContent').load(this.href,
 						function () {
 							$('#myModal').modal({
-								// desabilita o clique fora do modal
 								backdrop: 'static',
 								keyboard: true
 							},
@@ -41,21 +39,13 @@
 
 			$(dialog).ready(function () {
 
-				// se a função for definida nas "Index" invoca ela, isso evita erro no console.
 				if (typeof AfterLoadModal != 'undefined') {
 					AfterLoadModal();
 				}
 			});
 
 			$('form', dialog).submit(function () {
-				//let dataSerialize = '';
-
-				//if (typeof GetDataSerialize != 'undefined') {
-				//	dataSerialize = GetDataSerialize(this);
-				//} else {
-				//	dataSerialize = new FormData(this);
-				//}
-
+				
 				$.ajax({
 					url: this.action,
 					type: this.method,
@@ -63,21 +53,14 @@
 					success: function (result) {
 						if (result.success) {
 
-							console.log(result.msgToastrResurn);
-
 							$('#myModal').modal('hide');
 							if (loadDiv) {
-								//esse código, preenche uma div dentro de outra tela, exemplo, tela de cadastro que contém uma outra grid dentr dela, somente essa grid será feita o load
-								//$('#' + target).load(result.url); // Carrega o resultado HTML para a div demarcada
-							} else {
 
-								if (result.msgToastrResurn != undefined && result.msgToastrResurn != null) {
-									localStorage.setItem('msgToastr', result.msgToastrResurn);
-								}
+							} else {
 
 								window.location = result.url;
 							}
-							// esse código rechama a tela, por exemplo, estou inserindo alguma coisa, salvo e volto para a tela de listagem
+							
 						} else {
 							$('#myModalContent').html(result);
 							bindForm(dialog);

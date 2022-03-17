@@ -80,10 +80,7 @@ namespace GA.Fazenda.APP.Controllers
                 var animalInsert = _mapper.Map<Animal>(animalAux);
                 await _animalService.Adicionar(animalInsert);
 
-                if (!OperacaoValida()) {
-                    NotificarErro($"Erro ao persistir no banco de dados. Tag = {animalAux.Tag}");
-                    return View(animalVM); 
-                }
+                if (!OperacaoValida())  return View(animalVM); 
             }
 
             if (!await _animalService.Commited())
@@ -117,7 +114,7 @@ namespace GA.Fazenda.APP.Controllers
 
             await _animalService.Commited();
 
-            var url = Url.Action("Index", "Animal");
+            var url = Url.Action("Index", "CadastroListaAnimal");
             return Json(new { success = true, url });
         }
 
@@ -145,7 +142,7 @@ namespace GA.Fazenda.APP.Controllers
 
             await _animalService.Commited();
 
-            var url = Url.Action("Index", "Animal");
+            var url = Url.Action("Index", "CadastroListaAnimal");
             return Json(new { success = true, url });
         }
         private async Task<CadastroListAnimal> PopularFazendasAnimalList(CadastroListAnimal animal)

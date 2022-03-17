@@ -8,7 +8,6 @@
 <partial name="_partialModalDialog" />
 
 <form asp-action="Create" asp-controller="Animal">
-
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <div class="modal-body">
@@ -17,7 +16,7 @@
 
         <div class="form-group">
             <label asp-for="Tag" class="control-label"></label>
-            <input asp-for="Tag" autocomplete="off" class="form-control" />
+            <input asp-for="Tag" required autocomplete="off" class="form-control" />
             <span asp-validation-for="Tag" class="text-danger"></span>
         </div>
 

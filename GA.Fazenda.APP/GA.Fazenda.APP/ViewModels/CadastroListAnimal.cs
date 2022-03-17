@@ -1,16 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GA.Fazenda.APP.ViewModels
 {
     public class CadastroListAnimal
     {
+        [StringLength(15)]
         public string Tag { get; set; }
 
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [DisplayName("Fazenda")]
-        public int FazendaId { get; set; }
+        public int? FazendaId { get; set; }
 
         [NotMapped]
         [DisplayName("Animais")]

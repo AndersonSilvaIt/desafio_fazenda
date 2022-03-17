@@ -9,7 +9,7 @@ namespace GA.Fazenda.Business.Validacoes
         {
             RuleFor(f => f.Tag)
                 .NotEmpty().WithMessage("O campo {PropertyName} precisa ser fornecido.")
-                .Length(2, 100)
+                .Length(1, 15)
                 .WithMessage("O campo {PropertyName} precisa ter entre {MinLength} e {MatLength} caracteres.");
 
             RuleFor(f => NumeroValidator.Validar(f.Tag)).Equal(true)
@@ -23,7 +23,7 @@ namespace GA.Fazenda.Business.Validacoes
         {
             var tagNumeros = ApenasNumeros(tag);
 
-            if (tagNumeros.Length <= 0 || tagNumeros.Length > 13) return false;
+            if (tagNumeros.Length <= 0 || tagNumeros.Length > 15) return false;
 
             return true;
         }
