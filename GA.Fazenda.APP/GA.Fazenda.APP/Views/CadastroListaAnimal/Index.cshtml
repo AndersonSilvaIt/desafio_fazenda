@@ -165,7 +165,7 @@
                     for (var i = 0; i < result.length; i++) {
                         let id = result[i].id;
                         let text = result[i].nome;
-                        console.log('É igual', hdFazendaId == id);
+                        
                         if (hdFazendaId == id) {
 
                             $('#ddlFazenda').append($('<option>', { value: id, text: text, selected: 'selected' }));
@@ -188,7 +188,7 @@
             if (valorListaHidden.length > 0) {
 
                 listaAnimais = JSON.parse(valorListaHidden);
-                console.log('Lista Convertida', listaAnimais);
+                
                 idGlobal = listaAnimais.length;
                 for (var i = 0; i < listaAnimais.length; i++) {
                     $('#listAnimal').append($('<option>', { value: idGlobal, text: listaAnimais[i] }));

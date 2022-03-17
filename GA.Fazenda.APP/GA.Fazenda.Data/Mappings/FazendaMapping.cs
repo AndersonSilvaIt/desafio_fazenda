@@ -9,7 +9,7 @@ namespace GA.Fazenda.Data.Mappings
         {
             builder.ToTable("Fazenda");
 
-            builder.HasKey(p => p.Id);/
+            builder.HasKey(p => p.Id);
 
             builder.Property(x => x.Nome)
                 .IsRequired()

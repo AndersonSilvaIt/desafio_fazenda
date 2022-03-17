@@ -166,7 +166,7 @@
                     for (var i = 0; i < result.length; i++) {
                         let id = result[i].id;
                         let text = result[i].nome;
-                        console.log('É igual', hdFazendaId == id);
+                        
                         if (hdFazendaId == id) {
 
                             $('#ddlFazenda').append($('<option>', { value: id, text: text, selected: 'selected' }));
@@ -199,7 +199,6 @@
 
             var codigo = $('#txtSearchTag').val();
             fazendaId = $("#ddlFazenda").val();
-            console.log('Id da Fazenda Selecionado: ', fazendaId);
 
             url = `${href}&filterTag=${codigo}&filterFazendaId=${fazendaId}`;
             $('#btnPaginationRight').attr('href', url);
