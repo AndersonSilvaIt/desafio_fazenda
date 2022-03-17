@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css"  />
     <link rel="stylesheet" href="~/css/site.css" />
-
     @RenderSection("Styles", required: false)
 </head>
 <body>
@@ -27,10 +26,13 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark btn" style="background-color: lightgreen" asp-controller="Fazenda" asp-action="Index">Fazendas</a>
                         </li>
+                        &nbsp;&nbsp;
 
                         <li class="nav-item">
                             <a class="nav-link text-dark btn" style="background-color: lightgreen" asp-controller="Animal" asp-action="Index">Animais</a>
                         </li>
+                        &nbsp;&nbsp;
+
                         <li class="nav-item">
                             <a class="nav-link text-dark btn" style="background-color: lightblue" asp-controller="CadastroListaAnimal" asp-action="Index">Cadastrar Lista de Animal</a>
                         </li>

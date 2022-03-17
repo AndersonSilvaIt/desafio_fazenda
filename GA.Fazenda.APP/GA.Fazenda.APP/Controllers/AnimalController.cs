@@ -31,15 +31,23 @@ namespace GA.Fazenda.APP.Controllers
             _mapper = mapper;
         }
 
-        //public async Task<IActionResult> Search(int? pageNumber, string filterCode)
-        //{
-        //    ViewData["FilterCode"] = filterCode;
-        //
-        //    var lista = _mapper.Map<IEnumerable<AnimalVM>>(await _refugoService.Search(filterCode));
-        //    return View(PaginatedList<AnimalVM>.Create(lista.AsQueryable(), pageNumber ?? 1, pageSize));
-        //}
+        [Route("filtro-de-animais")]
+        public async Task<IActionResult> Search(int? pageNumber, string filterTag, string filterFazendaId)
+        {
+            ViewData["FilterTag"] = filterTag;
+            ViewData["FilterFazendaId"] = filterFazendaId;
 
-        [Route("lista-de-produtos")]
+            IEnumerable<AnimalVM> lista;
+
+            int fazendaId = 0;
+            int.TryParse(filterFazendaId, out fazendaId);
+
+            lista = _mapper.Map<IEnumerable<AnimalVM>>(await _animalRepository.ObterListaAnimaisComFazendasPorFiltro(filterTag, fazendaId));
+
+            return View("Index", PaginatedList<AnimalVM>.Create(lista.AsQueryable(), pageNumber ?? 1, pageSize));
+        }
+
+        [Route("lista-de-animais")]
         public async Task<IActionResult> Index(int? pageNumber)
         {
             ViewData["FilterTag"] = "";

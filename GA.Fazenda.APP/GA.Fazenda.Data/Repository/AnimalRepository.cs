@@ -25,6 +25,20 @@ namespace GA.Fazenda.Data.Repository
                         .OrderBy(a => a.Tag).AsNoTracking().ToListAsync();
         }
 
+        public async Task<IEnumerable<Animal>> ObterListaAnimaisComFazendasPorFiltro(string tag, int fazendaId)
+        {
+            var query = Db.Animais.AsNoTracking().Include(f => f.Fazenda);
+            List<Animal> lista;
+            tag = string.IsNullOrWhiteSpace(tag) ? "" : tag;
+
+            if (fazendaId > 0)
+                lista = await query.Where(x => x.Tag.Contains(tag) && x.FazendaId == fazendaId).OrderBy(x => x.Tag).AsNoTracking().ToListAsync();
+            else
+                lista = await query.Where(x => x.Tag.Contains(tag)).OrderBy(x => x.Tag).AsNoTracking().ToListAsync();
+
+            return lista;
+        }
+
         public async Task<Animal> ObterPorFazendaId(int fazendaId)
         {
             return await Db.Animais.AsNoTracking()

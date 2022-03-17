@@ -14,14 +14,17 @@
                 <div class="form-row">
                     <div class="form-group col-md-2">
                         <label class="control-label">Nome</label>
-                        <input id="txtSearchCode" data-filter-blur type="text" name="filterCode" autocomplete="off" class="form-control" value="@ViewData["FilterCode"]" />
+                        <input id="txtSearchName" data-filter-blur type="text" name="filterName" autocomplete="off" class="form-control" value="@ViewData["FilterName"]" />
                     </div>
 
                     <div class="form-group col-md-2">
                         <br />
                         <button type="submit" class="btn btn-primary btn-sm">
-                            <span title="Deletar" class="fa fa-search"></span>
+                            <span title="Buscar" class="fa fa-search"></span>
                         </button>
+                    </div>
+                    <div class="form-group col-md-1">
+                        <a class="btn btn-info btn-sm" asp-action="Index" data-action-refresh=""><span class="fa fa-sync"></span></a>
                     </div>
                 </div>
             </div>
@@ -107,7 +110,6 @@
 }
 
 @section Scripts {
-    @*@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}*@
 
     <script>
         var code = '';
@@ -123,7 +125,7 @@
 
             $('[data-action-refresh]').click(function () {
 
-                $('#txtSearchCode').val('');
+                $('#txtSearchName').val('');
                 
                 ChangeURL();
             });
@@ -137,17 +139,16 @@
             let indexE = href.indexOf('&');
             if (indexE != -1) { href = href.substr(0, indexE) };
 
-            codigo = $('#txtSearchCode').val();
-            filterType = $("[name='filterType']").val();
-
-            url = `${href}&filterCode=${codigo}`;
+            codigo = $('#txtSearchName').val();
+   
+            url = `${href}&filterName=${codigo}`;
             $('#btnPaginationRight').attr('href', url);
 
             href = $('#btnPaginationLeft').attr('href');
             indexE = href.indexOf('&');
             if (indexE != -1) { href = href.substr(0, indexE) };
 
-            url = `${href}&filterCode=${code}`;
+            url = `${href}&filterName=${code}`;
 
             $('#btnPaginationLeft').attr('href', url);
         }

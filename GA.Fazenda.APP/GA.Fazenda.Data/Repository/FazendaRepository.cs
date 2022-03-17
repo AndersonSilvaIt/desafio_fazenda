@@ -11,9 +11,5 @@ namespace GA.Fazenda.Data.Repository
         public FazendaRepository(FazendaContexto contexto) : base(contexto)
         { }
 
-        public async Task<IEnumerable> ObterComAnimais(int id)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

@@ -32,15 +32,21 @@ namespace GA.Fazenda.APP.Controllers
             _mapper = mapper;
         }
 
-        //public async Task<IActionResult> Search(int? pageNumber, string filterCode)
-        //{
-        //    ViewData["FilterCode"] = filterCode;
-        //
-        //    var lista = _mapper.Map<IEnumerable<AnimalVM>>(await _refugoService.Search(filterCode));
-        //    return View(PaginatedList<AnimalVM>.Create(lista.AsQueryable(), pageNumber ?? 1, pageSize));
-        //}
+        public async Task<IActionResult> Search(int? pageNumber, string filterTag, string filterFazendaId)
+        {
+            ViewData["FilterTag"] = filterTag;
+            ViewData["FilterFazendaId"] = filterFazendaId;
 
-        //[Route("lista-de-produtos")]
+            IEnumerable<AnimalVM> lista;
+
+            int fazendaId = 0;
+            int.TryParse(filterFazendaId, out fazendaId);
+
+            lista = _mapper.Map<IEnumerable<AnimalVM>>(await _animalRepository.ObterListaAnimaisComFazendasPorFiltro(filterTag, fazendaId));
+
+            return View("Index", PaginatedList<AnimalVM>.Create(lista.AsQueryable(), pageNumber ?? 1, pageSize));
+        }
+
         public async Task<IActionResult> Index(int? pageNumber)
         {
             ViewData["FilterTag"] = "";
@@ -49,14 +55,12 @@ namespace GA.Fazenda.APP.Controllers
             return View(PaginatedList<AnimalVM>.Create(animals.AsQueryable(), pageNumber ?? 1, pageSize));
         }
 
-        //[Route("novo-animal")]
         public async Task<IActionResult> Create()
         {
             CadastroListAnimal animalVM = await PopularFazendasAnimalList(new CadastroListAnimal());
             return View(animalVM);
         }
 
-        //[Route("novo-animal")]
         [HttpPost]
         public async Task<IActionResult> Create(CadastroListAnimal animalVM)
         {
@@ -92,7 +96,6 @@ namespace GA.Fazenda.APP.Controllers
             return Json(new { success = true, url });
         }
 
-        //[Route("editar-animal/{id:int}")]
         [HttpGet()]
         public async Task<IActionResult> Edit(int id)
         {
@@ -102,7 +105,6 @@ namespace GA.Fazenda.APP.Controllers
             return View("Edit", animalVM);
         }
 
-        //[Route("editar-animal/{id:int}")]
         [HttpPost]
         public async Task<IActionResult> Edit(AnimalVM animalVM)
         {
@@ -119,7 +121,6 @@ namespace GA.Fazenda.APP.Controllers
             return Json(new { success = true, url });
         }
 
-        //[Route("detalhes-animal/{id:int}")]
         public async Task<IActionResult> Details(int id)
         {
             var animalVM = _mapper.Map<AnimalVM>(await _animalRepository.ObterAnimalComFazenda(id));
@@ -127,7 +128,6 @@ namespace GA.Fazenda.APP.Controllers
             return View("Details", animalVM);
         }
 
-        //[Route("excluir-animal/{id:int}")]
         [HttpGet()]
         public async Task<IActionResult> Delete(int id)
         {
@@ -136,7 +136,6 @@ namespace GA.Fazenda.APP.Controllers
             return View("Delete", animalVM);
         }
 
-        //[Route("excluir-animal/{id:int}")]
         [HttpPost]
         public async Task<IActionResult> DeleteConfirma(int Id)
         {

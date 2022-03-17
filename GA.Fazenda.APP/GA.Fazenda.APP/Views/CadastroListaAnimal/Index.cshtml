@@ -9,6 +9,7 @@
         padding: 0px 20px 0px 20px; margin-bottom: 20px;">
 
         <legend style="padding: 0 0 0 2%; width: 15%;">Filtro</legend>
+        <input type="hidden" id="hdFazendaId" value="@ViewData["FilterFazendaId"]" />
         <form asp-action="Search" method="GET">
             <div>
                 <div class="form-row">
@@ -17,12 +18,22 @@
                         <input id="txtSearchTag" data-filter-blur type="text" name="filterTag" autocomplete="off" class="form-control" value="@ViewData["FilterTag"]" />
                     </div>
 
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Fazenda</label>
+                        <select name="filterFazendaId" id="ddlFazenda" class="form-control"></select>
+                    </div>
+
                     <div class="form-group col-md-2">
                         <br />
                         <button type="submit" class="btn btn-primary btn-sm">
-                            <span title="Deletar" class="fa fa-search"></span>
+                            <span title="Buscar" class="fa fa-search"></span>
                         </button>
                     </div>
+
+                    <div class="form-group col-md-1">
+                        <a class="btn btn-info btn-sm" asp-action="Index" data-action-refresh=""><span class="fa fa-sync"></span></a>
+                    </div>
+
                 </div>
             </div>
         </form>
@@ -53,18 +64,18 @@
     <tbody class="text-sm-left">
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Tag)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fazenda.Nome)
-            </td>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tag)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fazenda.Nome)
+                </td>
 
-            <td class="text-right">
-                <partial name="_partialButtonsDefaultList" model="item" />
-            </td>
-        </tr>
+                <td class="text-right">
+                    <partial name="_partialButtonsDefaultList" model="item" />
+                </td>
+            </tr>
         }
     </tbody>
 </table>
@@ -102,9 +113,10 @@
 @section Styles {
 
     <style type="text/css">
-        
-        .modal-dialog { max-width: 70%; }
 
+        .modal-dialog {
+            max-width: 70%;
+        }
     </style>
 }
 
@@ -114,9 +126,9 @@
         var code = '';
         var url = '';
 
-        var listaAnimais = [];
-        var idGlobal = 0;
         $(document).ready(function () {
+
+            PrrencherCombo();
 
             CollapseAndShowFilterIndex();
 
@@ -127,46 +139,55 @@
             $('[data-action-refresh]').click(function () {
 
                 $('#txtSearchTag').val('');
-                
+                $('#ddlFazenda').val('');
+
                 ChangeURL();
             });
 
             $("[data-btn-pagination]").click(() => ChangeURL());
+
+            $("#ddlFazenda").change(() => ChangeURL());
         });
+
+        function PrrencherCombo() {
+            var _url = '/Fazenda/ObterTodas';
+
+            $.ajax({
+                method: "get",
+                url: _url,
+                data: {},
+                success: function (result) {
+
+                    $('#ddlFazenda').append($('<option>', { value: 0, text: ' ' }));
+
+                    var hdFazendaId = $("#hdFazendaId").val();
+
+                    for (var i = 0; i < result.length; i++) {
+                        let id = result[i].id;
+                        let text = result[i].nome;
+                        console.log('É igual', hdFazendaId == id);
+                        if (hdFazendaId == id) {
+
+                            $('#ddlFazenda').append($('<option>', { value: id, text: text, selected: 'selected' }));
+                        }
+                        else {
+                            $('#ddlFazenda').append($('<option>', { value: id, text: text }));
+                        }
+                    }
+                },
+                error: function (error) {
+
+                }
+            });
+        }
 
         function AfterLoadModal() {
 
-            var valorListaHidden = $('#hdListaAnimal').val();
-            console.log('Valor da Lista', valorListaHidden);
-            
-            if (valorListaHidden.length > 0) {
-                // preencher a lista.
-                listaAnimais = JSON.parse(valorListaHidden);
-
-                console.log('Lista Convertida', listaAnimais);
-
-                idGlobal = listaAnimais.length;
-
-                for (var i = 0; i < listaAnimais.length; i++) {
-
-                    $('#listAnimal').append($('<option>', { value: idGlobal, text: listaAnimais[i] }));
-                    idGlobal++;
-                }
-            }
-
-            AdicionaRemoverAnimais();
-
             $("input[name='Tag']").keydown(function (e) {
-            
+
                 if (!$.isNumeric(String.fromCharCode(e.which))) e.preventDefault();
             });
 
-            $("#btnSave").click(function () {
-
-                let jsonAnimais = JSON.stringify(listaAnimais);
-                
-                $('#hdListaAnimal').val(jsonAnimais);
-            });
         }
 
         function ChangeURL() {
@@ -176,57 +197,19 @@
             if (indexE != -1) { href = href.substr(0, indexE) };
 
             codigo = $('#txtSearchTag').val();
+            fazendaId = $("#ddlFazenda").val();
+            console.log('Id da Fazenda Selecionado: ', fazendaId);
 
-            url = `${href}&filterTag=${codigo}`;
+            url = `${href}&filterTag=${codigo}&filterFazendaId=${fazendaId}`;
             $('#btnPaginationRight').attr('href', url);
 
             href = $('#btnPaginationLeft').attr('href');
             indexE = href.indexOf('&');
             if (indexE != -1) { href = href.substr(0, indexE) };
 
-            url = `${href}&filterTag=${code}`;
+            url = `${href}&filterTag=${code}&filterFazendaId=${fazendaId}`;
 
             $('#btnPaginationLeft').attr('href', url);
-        }
-    
-        function AdicionaRemoverAnimais() {
-
-            $("#btnAddAnimal").click(function (e) {
-                e.preventDefault();
-
-                var tag = $("input[name='Tag']").val();
-
-                if (tag.length <= 0) {
-                    alert('Tag precisa ser maior que zero.')
-                    return;
-                }
-                // verificar se na lista já não contém a Tag.
-
-                var index = listaAnimais.indexOf(tag);
-                if (index != -1) {
-                    alert('Tag já adicionado na lista');
-                    return;
-                }
-
-                idGlobal++;
-
-                $('#listAnimal').append($('<option>', { value: idGlobal, text: tag }));
-                listaAnimais.push(tag);
-
-                $("input[name='Tag']").val('');
-            });
-
-            $("#btnRemoveAnimal").click(function (e) {
-                e.preventDefault();
-                $("#listAnimal option:selected").each(function () {
-                    var text = $(this).text();
-                    var indexOf = listaAnimais.indexOf(text);
-
-                    listaAnimais.splice(indexOf, 1);
-                    $(this).remove();
-                });
-                
-            });
         }
 
     </script>

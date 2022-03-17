@@ -9,6 +9,7 @@
         padding: 0px 20px 0px 20px; margin-bottom: 20px;">
 
         <legend style="padding: 0 0 0 2%; width: 15%;">Filtro</legend>
+        <input type="hidden" id="hdFazendaId" value="@ViewData["FilterFazendaId"]" />
         <form asp-action="Search" method="GET">
             <div>
                 <div class="form-row">
@@ -17,12 +18,22 @@
                         <input id="txtSearchTag" data-filter-blur type="text" name="filterTag" autocomplete="off" class="form-control" value="@ViewData["FilterTag"]" />
                     </div>
 
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Fazenda</label>
+                        <select name="filterFazendaId" id="ddlFazenda" class="form-control"></select>
+                    </div>
+
                     <div class="form-group col-md-2">
                         <br />
                         <button type="submit" class="btn btn-primary btn-sm">
-                            <span title="Deletar" class="fa fa-search"></span>
+                            <span title="Buscar" class="fa fa-search"></span>
                         </button>
                     </div>
+
+                    <div class="form-group col-md-1">
+                        <a class="btn btn-info btn-sm" asp-action="Index" data-action-refresh=""><span class="fa fa-sync"></span></a>
+                    </div>
+
                 </div>
             </div>
         </form>
@@ -53,18 +64,18 @@
     <tbody class="text-sm-left">
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Tag)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fazenda.Nome)
-            </td>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tag)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fazenda.Nome)
+                </td>
 
-            <td class="text-right">
-                <partial name="_partialButtonsDefaultList" model="item" />
-            </td>
-        </tr>
+                <td class="text-right">
+                    <partial name="_partialButtonsDefaultList" model="item" />
+                </td>
+            </tr>
         }
     </tbody>
 </table>
@@ -102,9 +113,10 @@
 @section Styles {
 
     <style type="text/css">
-        
-        .modal-dialog { max-width: 40%; }
 
+        .modal-dialog {
+            max-width: 40%;
+        }
     </style>
 }
 
@@ -116,6 +128,8 @@
 
         $(document).ready(function () {
 
+            PrrencherCombo();
+
             CollapseAndShowFilterIndex();
 
             AjaxModal("", false);
@@ -125,12 +139,47 @@
             $('[data-action-refresh]').click(function () {
 
                 $('#txtSearchTag').val('');
-                
+                $('#ddlFazenda').val('');
+
                 ChangeURL();
             });
 
             $("[data-btn-pagination]").click(() => ChangeURL());
+
+            $("#ddlFazenda").change(() => ChangeURL());
         });
+
+        function PrrencherCombo() {
+            var _url = '/Fazenda/ObterTodas';
+
+            $.ajax({
+                method: "get",
+                url: _url,
+                data: {},
+                success: function (result) {
+
+                    $('#ddlFazenda').append($('<option>', { value: 0, text: ' ' }));
+
+                    var hdFazendaId = $("#hdFazendaId").val();
+
+                    for (var i = 0; i < result.length; i++) {
+                        let id = result[i].id;
+                        let text = result[i].nome;
+                        console.log('É igual', hdFazendaId == id);
+                        if (hdFazendaId == id) {
+
+                            $('#ddlFazenda').append($('<option>', { value: id, text: text, selected: 'selected' }));
+                        }
+                        else {
+                            $('#ddlFazenda').append($('<option>', { value: id, text: text }));
+                        }
+                    }
+                },
+                error: function (error) {
+
+                }
+            });
+        }
 
         function AfterLoadModal() {
 
@@ -148,15 +197,17 @@
             if (indexE != -1) { href = href.substr(0, indexE) };
 
             codigo = $('#txtSearchTag').val();
+            fazendaId = $("#ddlFazenda").val();
+            console.log('Id da Fazenda Selecionado: ', fazendaId);
 
-            url = `${href}&filterTag=${codigo}`;
+            url = `${href}&filterTag=${codigo}&filterFazendaId=${fazendaId}`;
             $('#btnPaginationRight').attr('href', url);
 
             href = $('#btnPaginationLeft').attr('href');
             indexE = href.indexOf('&');
             if (indexE != -1) { href = href.substr(0, indexE) };
 
-            url = `${href}&filterTag=${code}`;
+            url = `${href}&filterTag=${code}&filterFazendaId=${fazendaId}`;
 
             $('#btnPaginationLeft').attr('href', url);
         }

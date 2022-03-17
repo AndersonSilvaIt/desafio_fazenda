@@ -29,14 +29,16 @@ namespace GA.Fazenda.APP.Controllers
             _mapper = mapper;
         }
 
-        //public async Task<IActionResult> Search(int? pageNumber, string filterCode)
-        //{
-        //    ViewData["FilterCode"] = filterCode;
-        //
-        //    var lista = _mapper.Map<IEnumerable<FazendaVM>>(await _refugoService.Search(filterCode));
-        //    return View(PaginatedList<FazendaVM>.Create(lista.AsQueryable(), pageNumber ?? 1, pageSize));
-        //}
+        [Route("filtro-de-fazendas")]
+        public async Task<IActionResult> Search(int? pageNumber, string filterName)
+        {
+            ViewData["FilterName"] = filterName;
+        
+            var lista = _mapper.Map<IEnumerable<FazendaVM>>(await _fazendaRepository.Buscar(x => x.Nome.Contains(filterName)));
+            return View("Index", PaginatedList<FazendaVM>.Create(lista.AsQueryable(), pageNumber ?? 1, pageSize));
+        }
 
+        [Route("lista-de-fazendas")]
         public async Task<IActionResult> Index(int? pageNumber)
         {
             ViewData["FilterCode"] = "";
@@ -45,11 +47,13 @@ namespace GA.Fazenda.APP.Controllers
             return View(PaginatedList<FazendaVM>.Create(fazendas.AsQueryable(), pageNumber ?? 1, pageSize));
         }
 
+        [Route("nova-fazenda")]
         public IActionResult Create()
         {
             return View();
         }
 
+        [Route("nova-fazenda")]
         [HttpPost]
         public async Task<IActionResult> Create(FazendaVM fazendaVM)
         {
@@ -72,7 +76,7 @@ namespace GA.Fazenda.APP.Controllers
             return Json(new { success = true, url });
         }
 
-
+        [Route("editar-fazenda/{id:int}")]
         [HttpGet()]
         public async Task<IActionResult> Edit(int id)
         {
@@ -81,6 +85,7 @@ namespace GA.Fazenda.APP.Controllers
             return View("Edit", fazendaVM);
         }
 
+        [Route("editar-fazenda/{id:int}")]
         [HttpPost]
         public async Task<IActionResult> Edit(FazendaVM fazendaVM)
         {
@@ -96,6 +101,7 @@ namespace GA.Fazenda.APP.Controllers
             return Json(new { success = true, url });
         }
 
+        [Route("detalhe-fazenda/{id:int}")]
         public async Task<IActionResult> Details(int id)
         {
             var fazendaVM = _mapper.Map<FazendaVM>(await _fazendaRepository.ObterPorId(id));
@@ -103,6 +109,7 @@ namespace GA.Fazenda.APP.Controllers
             return View("Details", fazendaVM);
         }
 
+        [Route("excluir-fazenda/{id:int}")]
         [HttpGet()]
         public async Task<IActionResult> Delete(int id)
         {
@@ -111,6 +118,7 @@ namespace GA.Fazenda.APP.Controllers
             return View("Delete", fazendaVM);
         }
 
+        [Route("excluir-fazenda/{id:int}")]
         [HttpPost]
         public async Task<IActionResult> DeleteConfirma(int Id)
         {
@@ -122,6 +130,12 @@ namespace GA.Fazenda.APP.Controllers
 
             var url = Url.Action("Index", "Fazenda");
             return Json(new { success = true, url });
+        }
+
+        public async Task<IEnumerable<FazendaVM>> ObterTodas()
+        {
+            var listaFazenda = _mapper.Map<List<FazendaVM>>(await _fazendaRepository.ObterTodos());
+            return listaFazenda;
         }
     }
 }
