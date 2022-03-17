@@ -20,9 +20,7 @@ namespace GA.Fazenda.APP.ViewModels
         public List<SelectListItem> AnimaisLista { get; set; } = new List<SelectListItem>();
 
         public List<AnimalVM> Animais { get; set; }
-
         public string ListAnimaisJson { get; set; }
-
         public IEnumerable<FazendaVM> Fazendas { get; set; }
     }
 }

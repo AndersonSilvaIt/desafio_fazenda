@@ -136,9 +136,11 @@ namespace GA.Fazenda.APP.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteConfirma(int Id)
         {
+            var animalVM = _mapper.Map<AnimalVM>(await _animalRepository.ObterPorId(Id));
+
             _animalService.Remover(Id);
 
-            if (!OperacaoValida()) return NotFound();
+            if (!OperacaoValida()) return View("Delete", animalVM);
 
             await _animalService.Commited();
 

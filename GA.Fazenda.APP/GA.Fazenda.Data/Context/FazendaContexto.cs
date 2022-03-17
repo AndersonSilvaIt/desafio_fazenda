@@ -33,7 +33,7 @@ namespace GA.Fazenda.Data.Context
 			modelBuilder.ApplyConfigurationsFromAssembly(typeof(FazendaContexto).Assembly);
 
 			// VERIFICAR se irá fazer isso, ou colocar uma trava ...
-			//Aqui estou retirando o delete cascade das entidades
+			// Aqui estou retirando o delete cascade das entidades
 			foreach (var item in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
 			{
 				item.DeleteBehavior = DeleteBehavior.ClientSetNull;
@@ -44,16 +44,14 @@ namespace GA.Fazenda.Data.Context
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			//optionsBuilder.EnableSensitiveDataLogging();
-
 			base.OnConfiguring(optionsBuilder);
 		}
 
 		public async Task<int> SaveChangesContext()
 		{
-			int teste = await base.SaveChangesAsync();
+			int retorno = await base.SaveChangesAsync();
 		
-			return teste;
+			return retorno;
 		}
     }
 }

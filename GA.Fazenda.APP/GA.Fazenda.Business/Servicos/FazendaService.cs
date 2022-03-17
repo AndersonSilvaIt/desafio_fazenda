@@ -27,7 +27,7 @@ namespace GA.Fazenda.Business.Servicos
 
 			if ((await _fazendaRepository.Buscar(f => f.Nome == fazenda.Nome)).Any())
 			{
-				Notificar("Já existe um fazenda com este nome informado.");
+				Notificar($"Já existe um fazenda com este nome informado: {fazenda.Nome}");
 				return;
 			}
 
@@ -40,7 +40,7 @@ namespace GA.Fazenda.Business.Servicos
 
 			if ((await _fazendaRepository.Buscar(f => f.Nome == fazenda.Nome && f.Id != fazenda.Id)).Any())
 			{
-				Notificar("Já existe um fazenda com este nome informado.");
+				Notificar($"Já existe um fazenda com este nome informado { fazenda.Nome }");
 				return;
 			}
 

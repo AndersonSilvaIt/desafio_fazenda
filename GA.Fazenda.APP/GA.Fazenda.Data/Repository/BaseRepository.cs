@@ -38,31 +38,22 @@ namespace GA.Fazenda.Data.Repository
 		public virtual void Adicionar(TEntity entity)
 		{
 			DbSet.Add(entity);
-			//await SaveChanges();
 		}
 
 		public virtual void Atualizar(TEntity entity)
 		{
 			DbSet.Update(entity);
-			//await SaveChanges();
 		}
 
 		public virtual void Remover(int id)
 		{
 			var entity = new TEntity { Id = id };
 			DbSet.Remove(entity);
-			//await SaveChanges();
 		}
-
-		//public async Task<int> SaveChanges()
-		//{
-		//	return await Db.SaveChangesAsync();
-		//}
 
 		public void Dispose()
 		{
 			Db?.Dispose();
 		}
-
 	}
 }

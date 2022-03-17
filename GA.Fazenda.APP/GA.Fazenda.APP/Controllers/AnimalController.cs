@@ -21,8 +21,7 @@ namespace GA.Fazenda.APP.Controllers
         private readonly int pageSize = 4;
 
         public AnimalController(IAnimalRepository animalRepository, IFazendaRepository fazendaRepository,
-                                    IAnimalService animalService,
-                                 IMapper mapper,
+                                    IAnimalService animalService, IMapper mapper,
                                         INotificador notificador) : base(notificador)
         {
             _animalRepository = animalRepository;
@@ -50,7 +49,6 @@ namespace GA.Fazenda.APP.Controllers
         [Route("lista-de-animais")]
         public async Task<IActionResult> Index(int? pageNumber)
         {
-            ViewData["FilterTag"] = "";
             var animals = _mapper.Map<IEnumerable<AnimalVM>>(await _animalRepository.ObterListaAnimaisComFazendas());
 
             return View(PaginatedList<AnimalVM>.Create(animals.AsQueryable(), pageNumber ?? 1, pageSize));
@@ -69,6 +67,7 @@ namespace GA.Fazenda.APP.Controllers
         {
             animalVM = await PopularFazendas(animalVM);
             ModelState.Remove("Id");
+
             if (!ModelState.IsValid)
                 return View(animalVM);
 
@@ -135,9 +134,11 @@ namespace GA.Fazenda.APP.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteConfirma(int Id)
         {
+            var animalVM = _mapper.Map<AnimalVM>(await _animalRepository.ObterPorId(Id));
+
             _animalService.Remover(Id);
 
-            if (!OperacaoValida()) return NotFound();
+            if (!OperacaoValida()) return View("Delete", animalVM);
 
             await _animalService.Commited();
 

@@ -23,7 +23,7 @@ namespace GA.Fazenda.Data.UOW
             }
             catch (Exception ex)
             {
-
+                // Realizar algum log aqui, talvez ...
             }
             return changeAmount > 0;
         }

@@ -9,8 +9,6 @@ namespace GA.Fazenda.Business.Interfaces.Repositorios
         Task<IEnumerable<Animal>> ObterListaAnimaisComFazendas();
         Task<IEnumerable<Animal>> ObterListaAnimaisComFazendasPorFiltro(string tag, int fazendaId);
         Task<Animal> ObterPorFazendaId(int fazendaId);
-        Task<Animal> ObterAnimalComFazenda(int id); //Retorna o Produto e o fornecedor dele
+        Task<Animal> ObterAnimalComFazenda(int id); 
     }
-
-
 }
